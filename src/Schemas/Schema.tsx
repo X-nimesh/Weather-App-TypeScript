@@ -19,9 +19,14 @@ export type TodaysWeather = {
   };
   
   export type Coordinates = {
-    lon: number;
-    lat: number;
-    district: string;
-    country?: string;
+    longitude: number;
+    latitude: number;
+
+  };
+  export type CityDetails = {
+    CityName: string;
+    Cntry: string;
+    State: string;
+
   };
   

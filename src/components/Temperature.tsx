@@ -3,8 +3,8 @@ import { Avatar, Box, Flex, Grid, GridItem, Image, Text } from '@chakra-ui/react
 import { MdOutlineShareLocation } from "react-icons/md";
 import { TodaysWeather } from '../Schemas/Schema';
 
-const Tempertaure:React.FC<{TodayWeather:TodaysWeather}>  = (props) => {
-    let { TodayWeather } = props;
+const Tempertaure: React.FC<{ TodayWeather: TodaysWeather, unitDet: string }> = (props) => {
+    let { TodayWeather, unitDet } = props;
     // console.log("log : TodayWeather", TodayWeather)
     return (
         <Grid bg='white'
@@ -18,7 +18,7 @@ const Tempertaure:React.FC<{TodayWeather:TodaysWeather}>  = (props) => {
                 <Image src='./assets/temprature.svg' h='150px' />
             </GridItem>
             <Flex alignItems='center' justifyItems='center'>
-                <Text fontSize='4xl' color='brand.dblue'>{TodayWeather.temp}<Text as='span' fontSize='xl' color='brand.lgrey'>C</Text></Text>
+                <Text fontSize='4xl' color='brand.dblue'>{TodayWeather.temp}<Text as='span' fontSize='xl' color='brand.lgrey'>{unitDet}</Text></Text>
             </Flex>
             <Flex alignItems='center' gap='10px'>
                 <Box fontSize='30px'>

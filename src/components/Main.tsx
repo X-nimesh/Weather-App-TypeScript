@@ -10,10 +10,21 @@ import WeatherWidget from './WeatherWidget';
 // interface Props{
 //     weeklyData:WeeklyWeather
 // }
-const Main:React.FC<{weeklyData:WeeklyWeather[];TodayWeather:TodaysWeather}> = (props) => {
-    let { weeklyData,TodayWeather } = props;
+const Main: React.FC<{ weeklyData: WeeklyWeather[]; TodayWeather: TodaysWeather, setUnit: (arg: string) => void, unitDet: string }> = (props) => {
+    let { weeklyData, TodayWeather, setUnit, unitDet } = props;
     // console.log("log : weeklyData", weeklyData)
-  
+    let unit = (unitClick: string) => {
+        if (unitClick === 'metric') {
+            setUnit('metric');
+            console.log('metric');
+
+        }
+        else if (unitClick === 'imperial') {
+            console.log('imperial');
+            setUnit('imperial');
+
+        }
+    }
     return (
         <>
             <Grid gridTemplateRows='10% 30% auto' h='100vh' p='10px 20px' gap='20px'  >
@@ -23,12 +34,21 @@ const Main:React.FC<{weeklyData:WeeklyWeather[];TodayWeather:TodaysWeather}> = (
                         <Text color='#58b0f7' fontSize='xl' fontWeight='600'>Week</Text>
                     </Flex>
                     <Flex justifyContent='flex-end' gap='10px' fontFamily='Poppins'>
-                        <Flex bg='#4dabf7' w='8' h='8' alignItems='center' justifyContent='center' color='white' borderRadius='50%' >
+                        <Flex bg='#4dabf7' w='8' h='8'
+                            alignItems='center'
+                            justifyContent='center'
+                            color='white'
+                            borderRadius='50%'
+                            cursor='pointer'
+                            onClick={() => { unit('metric') }} >
                             <Text>
                                 °C
                             </Text>
                         </Flex>
-                        <Flex bg='#8c8d9c' w='8' h='8' alignItems='center' justifyContent='center' color='white' borderRadius='50%'>
+                        <Flex bg='#8c8d9c' w='8' h='8' alignItems='center' justifyContent='center' color='white' borderRadius='50%'
+                            cursor='pointer'
+                            onClick={() => { unit('imperial') }}
+                        >
                             <Text fontFamily='Poppins'>
                                 °F
                             </Text>
@@ -52,7 +72,7 @@ const Main:React.FC<{weeklyData:WeeklyWeather[];TodayWeather:TodaysWeather}> = (
                     {weeklyData?.map((item) => (
                         // <h1></h1>
                         // { item }
-                        <WeatherWidget day={item.day} status={item.status} temp={item.temp}/>
+                        <WeatherWidget day={item.day} unitDet={unitDet} status={item.status} temp={item.temp} />
                     ))}
                 </Flex>
                 <GridItem w='100%' h='100%' pl='15px' >
@@ -61,8 +81,8 @@ const Main:React.FC<{weeklyData:WeeklyWeather[];TodayWeather:TodaysWeather}> = (
                     </Text>
                     <Grid gridTemplateColumns='repeat(3, 1fr)' gap='10px' >
 
-                        <Sunrise TodayWeather={TodayWeather}/>
-                        <Tempertaure TodayWeather={TodayWeather}/>
+                        <Sunrise TodayWeather={TodayWeather} />
+                        <Tempertaure unitDet={unitDet} TodayWeather={TodayWeather} />
                         {/* {weather.map((item) => (
                             <HighlightComponent title={item.title} head={item.head} sub={item.sub} status={item.status} img={item.img} />
                         ))} */}

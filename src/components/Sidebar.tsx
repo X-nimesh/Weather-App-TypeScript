@@ -1,56 +1,70 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Grid, GridItem, Text, Input, InputGroup, InputLeftElement, InputRightElement, Stack, Flex, Spacer, Image, Box, Icon, Wrap } from '@chakra-ui/react'
 import { AiOutlineSearch } from "react-icons/ai";
 import { BiCurrentLocation } from "react-icons/bi";
 import rainy from '../assets/rainny.svg'
 import cloud from '../assets/cloudy.svg'
 import sunrise from '../assets/sunrise.svg'
-import { TodaysWeather } from '../Schemas/Schema';
+import { CityDetails, Coordinates, TodaysWeather } from '../Schemas/Schema';
 import AutoComplete from './AutoComplete';
 import axios from 'axios';
-interface cordinate{
-    'longitude':number,'latitude':number
-}
-const Sidebar:React.FC<{Todayweather:TodaysWeather,cord:cordinate}> = (props) => {
-    let date=new Date();
-    let { Todayweather,cord } = props;
-    let [city, setCity] = useState();    
+
+const Sidebar: React.FC<{ Todayweather: TodaysWeather, cord: (arg: Coordinates) => void, unit: string }> = (props) => {
+    let date = new Date();
+    let { Todayweather, cord, unit } = props;
+    let [city, setCity] = useState();
+    // const [unitChange, setunitChange] = useState(unit);
+    useEffect(() => {
+        //   setunitChange(unit);
+        console.log(unit);
+
+
+    }, [unit])
+
     const [cities, setcities] = useState<string[]>([]);
+    const [cityNameDetails, setcityNameDetails] = useState<CityDetails>({
+        CityName: 'Kathmandu',
+        Cntry: 'Nepal',
+        State: 'Bagmati'
+    });
+
+
     // let cities:[string] = ['kathmandu'];
-    let handleSearch=(e:any)=>{
-        console.log("search",e);
+    let handleSearch = (e: any) => {
+        console.log("search", e);
         setCity(e);
         getcities(e);
     }
-    let getcities = async (city:string) => {
-        let citiesList:string[]=[];
+    let getcities = async (city: string) => {
+        let citiesList: string[] = [];
         await axios({
             method: 'GET',
             url: `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=4&appid=2cef435fc80892a1fcba4005dc6b4223`,
         })
-        .then(function (response:any) {
-        // console.log('Response',response);
-        response.data.map((item:string,id:number)=>{
-            citiesList.push(item);
-        })
-        setcities(citiesList);
-        
-        
-    })
-    .catch(function (error) {
-        console.log(error)
-    });
-    // console.log("log : response.data.map : citiesList", citiesList)
-    
-}
-console.log(cities);
-let cityDetail={
-    'CityName':"Kathmandu",
-    'CountryName':"Nepal",
-    'State':"Nepal",
-    'Latitude':27.7172453,
-    'Longitude':85.3239605,
-};
+            .then(function (response: any) {
+                // console.log('Response',response);
+                response.data.map((item: string, id: number) => {
+                    citiesList.push(item);
+                })
+                setcities(citiesList);
+
+
+            })
+            .catch(function (error) {
+                console.log(error)
+            });
+        // console.log("log : response.data.map : citiesList", citiesList)
+
+    }
+    // console.log(cities);
+    let cityDetail = {
+        'CityName': "Kathmandu",
+        'CountryName': "Nepal",
+        'State': "Nepal",
+        'Latitude': 27.7172453,
+        'Longitude': 85.3239605,
+    };
+
 
     return (
         <>
@@ -62,22 +76,22 @@ let cityDetail={
                             pointerEvents='none'
                             children={<AiOutlineSearch color='black' />}
                         />
-                        <Input type='tel' placeholder='search' color='black' onChange={(event)=>{handleSearch(event.target.value)}} />
+                        <Input type='tel' placeholder='search' color='black' onChange={(event) => { handleSearch(event.target.value) }} />
                     </InputGroup>
-                     {cities.length>0 &&  <Flex direction='column' color='gray.500' bg='white' border='1px' borderColor='gray.200' pl='40px'>
-                    {cities?.map((item:any)=>{
-                        console.log(item);
-                        cityDetail.CityName=item.name;
-                        cityDetail.CountryName=item.country;
-                        cityDetail.Latitude=item.lat;
-                        cityDetail.Longitude=item.lon;
-                        cityDetail.State=item.state;
-                        return <AutoComplete city={cityDetail}/>
-                        
-                        
-                    })}
-                </Flex>}
-                   
+                    {cities.length > 0 && <Flex direction='column' color='gray.500' bg='white' border='1px' borderColor='gray.200' pl='40px'>
+                        {cities?.map((item: any) => {
+                            console.log(item);
+                            cityDetail.CityName = item.name;
+                            cityDetail.CountryName = item.country;
+                            cityDetail.Latitude = item.lat;
+                            cityDetail.Longitude = item.lon;
+                            cityDetail.State = item.state;
+                            return <AutoComplete city={cityDetail} cord={cord} cityDetails={setcityNameDetails} />
+
+
+                        })}
+                    </Flex>}
+
                 </Stack>
                 <Stack w='100%' >
 
@@ -88,7 +102,7 @@ let cityDetail={
                     // m='0 auto'
                     />
                     <Text align='left' fontSize='5xl' fontFamily='Roboto' fontWeight='medium' color='#4dabf7'>
-                        {Todayweather?.temp}°C
+                        {Todayweather?.temp}°{unit}
                     </Text>
                     <Text as='span' align='left' fontSize='xl' fontFamily='Roboto' fontWeight='600' color='black'>
                         Monday,
@@ -123,7 +137,7 @@ let cityDetail={
 
                     <Icon as={BiCurrentLocation} w='8' h='12' mt='10px' color='#6875f5' />
                     <Text fontSize='2xl' color='#424360' >
-                        Budhanilkantha,<br />Kathamndu,Nepal
+                        {cityNameDetails.CityName},<br />{cityNameDetails.State},<br />{cityNameDetails.Cntry}
                     </Text>
                 </Wrap>
 
