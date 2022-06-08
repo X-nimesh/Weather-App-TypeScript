@@ -22,6 +22,7 @@ const Sunrise: React.FC<{ TodayWeather: TodaysWeather }> = (props) => {
     let timerise = new Date(sunTime.sunrise * 1000);
     // setSunrise(TodayWeather?.sunrise);
     // console.log("log : TodayWeather", sunTime)  
+
     return (
         <Grid gridTemplateRows='10% auto auto' p='20px 30px' bg='white' gap='10px'>
             <Text color='#7c7d8f' >

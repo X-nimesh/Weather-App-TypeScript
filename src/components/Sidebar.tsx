@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Grid, GridItem, Text, Input, InputGroup, InputLeftElement, InputRightElement, Stack, Flex, Spacer, Image, Box, Icon, Wrap } from '@chakra-ui/react'
+import { Grid, GridItem, Text, Input, InputGroup, InputLeftElement, InputRightElement, Stack, Flex, Spacer, Image, Box, Icon, Wrap, Button } from '@chakra-ui/react'
 import { AiOutlineSearch } from "react-icons/ai";
 import { BiCurrentLocation } from "react-icons/bi";
 import rainy from '../assets/rainny.svg'
@@ -8,11 +8,12 @@ import sunrise from '../assets/sunrise.svg'
 import { CityDetails, Coordinates, TodaysWeather } from '../Schemas/Schema';
 import AutoComplete from './AutoComplete';
 import axios from 'axios';
+import useClick from './useClick';
 
 const Sidebar: React.FC<{ Todayweather: TodaysWeather, cord: (arg: Coordinates) => void, unit: string }> = (props) => {
-    let date = new Date();
+    let date = new Date()
     let { Todayweather, cord, unit } = props;
-    let [city, setCity] = useState();
+    // let [city, setCity] = useState();
     // const [unitChange, setunitChange] = useState(unit);
     useEffect(() => {
         //   setunitChange(unit);
@@ -27,19 +28,28 @@ const Sidebar: React.FC<{ Todayweather: TodaysWeather, cord: (arg: Coordinates) 
         Cntry: 'Nepal',
         State: 'Bagmati'
     });
-
+    let timer: any = null;
 
     // let cities:[string] = ['kathmandu'];
     let handleSearch = (e: any) => {
-        console.log("search", e);
-        setCity(e);
-        getcities(e);
+        // console.log("search", e);
+        // setCity(e);
+        e.preventDefault();
+        if (setTimeout !== null) {
+            clearTimeout(timer);
+            console.log('hs');
+        }
+        timer = setTimeout(() => {
+            getcities(e);
+        }, 500);
     }
-    let getcities = async (city: string) => {
+    let getcities = async (city: any) => {
+        city.preventDefault();
+
         let citiesList: string[] = [];
         await axios({
             method: 'GET',
-            url: `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=4&appid=2cef435fc80892a1fcba4005dc6b4223`,
+            url: `http://api.openweathermap.org/geo/1.0/direct?q=${city.target.value}&limit=4&appid=2cef435fc80892a1fcba4005dc6b4223`,
         })
             .then(function (response: any) {
                 // console.log('Response',response);
@@ -65,9 +75,15 @@ const Sidebar: React.FC<{ Todayweather: TodaysWeather, cord: (arg: Coordinates) 
         'Longitude': 85.3239605,
     };
 
+    const { loading, loadingChange } = useClick();
 
     return (
         <>
+            <Button size='sm' m='0 auto' w='100px' h='50px'
+                isLoading={loading}
+                onClick={loadingChange} >
+                Click Me
+            </Button>
             <Flex alignItems='center' direction='column' gap='20px' pl='20px' pt='20px'>
 
                 <Stack w='95%' spacing={0} >
@@ -76,7 +92,7 @@ const Sidebar: React.FC<{ Todayweather: TodaysWeather, cord: (arg: Coordinates) 
                             pointerEvents='none'
                             children={<AiOutlineSearch color='black' />}
                         />
-                        <Input type='tel' placeholder='search' color='black' onChange={(event) => { handleSearch(event.target.value) }} />
+                        <Input type='tel' placeholder='search' color='black' onChange={handleSearch} />
                     </InputGroup>
                     {cities.length > 0 && <Flex direction='column' color='gray.500' bg='white' border='1px' borderColor='gray.200' pl='40px'>
                         {cities?.map((item: any) => {
@@ -112,6 +128,7 @@ const Sidebar: React.FC<{ Todayweather: TodaysWeather, cord: (arg: Coordinates) 
                     </Text>
 
                 </Stack>
+
 
                 <Flex alignItems='center' justifyContent='space-between' direction='column'  >
                     <Flex direction='row' alignItems='center' gap='15px'>

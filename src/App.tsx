@@ -5,8 +5,8 @@ import Main_container from './components/Main_container';
 function App() {
   return (
     <div className="App">
-        <Main_container/>
-      
+      <Main_container />
+
     </div>
   );
 }

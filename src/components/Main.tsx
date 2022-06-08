@@ -1,10 +1,12 @@
-import { Avatar, Box, Flex, Grid, GridItem, Text } from '@chakra-ui/react'
+import { Avatar, Box, Button, Flex, Grid, GridItem, Text } from '@chakra-ui/react'
 import React from 'react'
 import { MdArrowDropDown } from "react-icons/md";
 import { TodaysWeather, WeeklyWeather } from '../Schemas/Schema';
 import HighlightComponent from './HighlightComponent';
 import Sunrise from './Sunrise';
 import Tempertaure from './Temperature';
+import Timer from './Timer';
+import useClick from './useClick';
 import WeatherWidget from './WeatherWidget';
 
 // interface Props{
@@ -25,6 +27,8 @@ const Main: React.FC<{ weeklyData: WeeklyWeather[]; TodayWeather: TodaysWeather,
 
         }
     }
+    const { loading, loadingChange } = useClick();
+
     return (
         <>
             <Grid gridTemplateRows='10% 30% auto' h='100vh' p='10px 20px' gap='20px'  >
@@ -86,8 +90,12 @@ const Main: React.FC<{ weeklyData: WeeklyWeather[]; TodayWeather: TodaysWeather,
                         {/* {weather.map((item) => (
                             <HighlightComponent title={item.title} head={item.head} sub={item.sub} status={item.status} img={item.img} />
                         ))} */}
-
-
+                        <Timer />
+                        <Button size='sm' m='0 auto' w='100px' h='50px'
+                            isLoading={loading}
+                            onClick={loadingChange} >
+                            Click Me
+                        </Button>
 
                     </Grid>
                 </GridItem>
