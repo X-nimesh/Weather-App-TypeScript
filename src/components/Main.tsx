@@ -1,5 +1,5 @@
 import { Avatar, Box, Button, Flex, Grid, GridItem, Text } from '@chakra-ui/react'
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import { MdArrowDropDown } from "react-icons/md";
 import { TodaysWeather, WeeklyWeather } from '../Schemas/Schema';
 import HighlightComponent from './HighlightComponent';
@@ -8,12 +8,19 @@ import Tempertaure from './Temperature';
 import Timer from './Timer';
 import useClick from './useClick';
 import WeatherWidget from './WeatherWidget';
+import { ThemeContext } from '../ThemeContext';
 
-// interface Props{
-//     weeklyData:WeeklyWeather
-// }
+
 const Main: React.FC<{ weeklyData: WeeklyWeather[]; TodayWeather: TodaysWeather, setUnit: (arg: string) => void, unitDet: string }> = (props) => {
     let { weeklyData, TodayWeather, setUnit, unitDet } = props;
+
+    // let { DarkTheme } = useContext(ThemeContext);
+    // const [Darktheme, setDarktheme] = useState(useContext(ThemeContext))
+    let { DarkTheme, themeChange } = useContext<any>(ThemeContext);
+    // console.log("log : Darktheme", Darktheme)
+
+    // console.log("log : DarkTheme", DarkTheme)
+
     // console.log("log : weeklyData", weeklyData)
     let unit = (unitClick: string) => {
         if (unitClick === 'metric') {
@@ -28,10 +35,12 @@ const Main: React.FC<{ weeklyData: WeeklyWeather[]; TodayWeather: TodaysWeather,
         }
     }
     const { loading, loadingChange } = useClick();
+    // console.log(Darktheme);
+
 
     return (
         <>
-            <Grid gridTemplateRows='10% 30% auto' h='100vh' p='10px 20px' gap='20px'  >
+            <Grid gridTemplateRows='10% 30% auto' h='100vh' p='10px 20px' gap='20px' bg={DarkTheme ? '#181818' : 'white'} >
                 <Grid gridTemplateColumns='20% 50% auto' w='100%' h='100%' alignItems='center'>
                     <Flex justifyContent='space-around'>
                         <Text color='#8c8d9c' fontSize='xl' fontWeight='600'>Today</Text>
@@ -58,15 +67,17 @@ const Main: React.FC<{ weeklyData: WeeklyWeather[]; TodayWeather: TodaysWeather,
                             </Text>
                         </Flex>
                     </Flex>
-                    <Flex alignItems='center' justifyContent='space-between' bg='white' p='5px 20px' ml='20px' borderRadius='10px'>
+                    <Flex alignItems='center' justifyContent='space-between'
+                        bg={DarkTheme ? '#161515' : 'white'}
+                        p='5px 20px' ml='20px' borderRadius='10px'>
                         <Flex alignItems='center' gap='10px'>
 
                             <Avatar src='https://i1.adis.ws/i/canon/get-inspired-home-studio-portraits-1-hub_0259e4eec3a54ed6bc6e310ff403fb9d?w=550&qlt=100' w='10' h='10' />
-                            <Text fontSize='sm' fontWeight='600' color='#17183c' >
+                            <Text fontSize='sm' fontWeight='600' color={DarkTheme ? '#ffff' : '#181818'} >
                                 Diagonal Tech
                             </Text>
                         </Flex>
-                        <Text fontSize='3xl' fontWeight='600' color='#17183c' >
+                        <Text fontSize='3xl' fontWeight='600' color={DarkTheme ? '#ffff' : '#181818'} >
                             <MdArrowDropDown />
                         </Text>
                     </Flex>

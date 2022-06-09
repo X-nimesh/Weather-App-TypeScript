@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Grid, GridItem, Text, Input, InputGroup, InputLeftElement, InputRightElement, Stack, Flex, Spacer, Image, Box, Icon, Wrap, Button } from '@chakra-ui/react'
 import { AiOutlineSearch } from "react-icons/ai";
 import { BiCurrentLocation } from "react-icons/bi";
@@ -9,15 +9,25 @@ import { CityDetails, Coordinates, TodaysWeather } from '../Schemas/Schema';
 import AutoComplete from './AutoComplete';
 import axios from 'axios';
 import useClick from './useClick';
+// import { ThemeContext } from '../index';
+import { ThemeContext } from '../ThemeContext';
 
 const Sidebar: React.FC<{ Todayweather: TodaysWeather, cord: (arg: Coordinates) => void, unit: string }> = (props) => {
     let date = new Date()
+    // const [Darktheme, setDarktheme] = useState(useContext(ThemeContext))
+    // let darkTheme = useContext(ThemeContext);
+    // let themeChange = useContext(ChangeThemeContext);
+    let { DarkTheme, themeChange } = useContext<any>(ThemeContext);
+
+    // console.log(Darktheme);
+
+
     let { Todayweather, cord, unit } = props;
     // let [city, setCity] = useState();
     // const [unitChange, setunitChange] = useState(unit);
     useEffect(() => {
         //   setunitChange(unit);
-        console.log(unit);
+        // console.log(unit);
 
 
     }, [unit])
@@ -79,12 +89,12 @@ const Sidebar: React.FC<{ Todayweather: TodaysWeather, cord: (arg: Coordinates) 
 
     return (
         <>
-            <Button size='sm' m='0 auto' w='100px' h='50px'
-                isLoading={loading}
-                onClick={loadingChange} >
-                Click Me
-            </Button>
-            <Flex alignItems='center' direction='column' gap='20px' pl='20px' pt='20px'>
+            <Flex alignItems='center' direction='column' gap='20px' pl='20px' pt='20px' bg={DarkTheme ? '#181818' : 'white'}  >
+                <Button size='sm' m='0 auto' w='100px' h='50px'
+                    isLoading={loading}
+                    onClick={themeChange} >
+                    Click Me
+                </Button >
 
                 <Stack w='95%' spacing={0} >
                     <InputGroup bg='white' borderRadius='10px'>
@@ -120,7 +130,7 @@ const Sidebar: React.FC<{ Todayweather: TodaysWeather, cord: (arg: Coordinates) 
                     <Text align='left' fontSize='5xl' fontFamily='Roboto' fontWeight='medium' color='#4dabf7'>
                         {Todayweather?.temp}°{unit}
                     </Text>
-                    <Text as='span' align='left' fontSize='xl' fontFamily='Roboto' fontWeight='600' color='black'>
+                    <Text as='span' align='left' fontSize='xl' fontFamily='Roboto' fontWeight='600' color={DarkTheme ? 'white' : 'black'}>
                         Monday,
                         <Text as='span' pl='4px' align='left' fontSize='xl' fontFamily='Roboto' fontWeight='500' color='#bfbfbf'>
                             {date.getHours()}:{date.getMinutes()}
@@ -152,8 +162,8 @@ const Sidebar: React.FC<{ Todayweather: TodaysWeather, cord: (arg: Coordinates) 
                 </Flex>
                 <Wrap gap='10px' w='90%' border='3px' h='150px' mr='20px' borderColor='#acacbe' borderStyle='dashed'>
 
-                    <Icon as={BiCurrentLocation} w='8' h='12' mt='10px' color='#6875f5' />
-                    <Text fontSize='2xl' color='#424360' >
+                    <Icon as={BiCurrentLocation} w='8' h='12' mt='10px' color={DarkTheme ? 'lightblue' : 'black'} />
+                    <Text fontSize='2xl' color={DarkTheme ? 'white' : 'black'} >
                         {cityNameDetails.CityName},<br />{cityNameDetails.State},<br />{cityNameDetails.Cntry}
                     </Text>
                 </Wrap>

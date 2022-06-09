@@ -5,7 +5,7 @@ import useClick from './useClick';
 const Timer = () => {
     const [Timer, setTimer] = useState('00:00:00');
     let EndTime = new Date('2022-06-09 14:30:00').getTime() / 1000;
-    console.log(EndTime);
+    // console.log(EndTime);
     let t = (EndTime - new Date().getTime() / 1000) + 1;
     // console.log("log : Timer : t", t)
     // console.log("log : Timer : t1", t - 1000)
@@ -16,7 +16,7 @@ const Timer = () => {
     }, [])
 
     let TimeLeft = (t: number) => {
-        console.log('time left', t);
+        // console.log('time left', t);
         t--;
         let hours = Math.floor((t % 86400) / 3600);
         let minutes = Math.floor((t % 3600) / 60);

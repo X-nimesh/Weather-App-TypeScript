@@ -1,13 +1,23 @@
-import React from 'react';
+import React, { createContext } from 'react';
 import './App.css';
 import Main_container from './components/Main_container';
+import ThemeProvider from './ThemeContext';
+interface Theme {
+  DarkTheme: boolean;
+}
 
+export const ThemeContext = createContext<Theme>({
+  DarkTheme: true,
+});
 function App() {
   return (
-    <div className="App">
-      <Main_container />
+    <ThemeProvider>
 
-    </div>
+      <div className="App">
+        <Main_container />
+
+      </div>
+    </ThemeProvider>
   );
 }
 
