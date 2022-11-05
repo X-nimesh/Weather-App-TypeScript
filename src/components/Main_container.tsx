@@ -98,7 +98,7 @@ const Main_container = () => {
           <Sidebar Todayweather={TodaysWeatherData} unit={unitDet} cord={setcordinate} />
         </GridItem>
         <GridItem bg='#fafafa' >
-          <Main weeklyData={weeklyWeatherData} setUnit={setUnit} unitDet={unitDet} TodayWeather={TodaysWeatherData} />
+          <Main weeklyData={weeklyWeatherData} setUnit={setUnit} Tempunit={unit} unitDet={unitDet} TodayWeather={TodaysWeatherData} />
         </GridItem>
       </Grid>
 

@@ -8,8 +8,8 @@ interface Time {
     sunrise: number
 };
 const Sunrise: React.FC<{ TodayWeather: TodaysWeather }> = (props) => {
-    let { theme, changeTheme } = ContextMain;
-    // let { DarkTheme, themeChange } = useContext<any>(ThemeContext);
+    // let { theme, changeTheme } = ContextMain;
+    let { DarkTheme, themeChange } = useContext<any>(ThemeContext);
     let { TodayWeather } = props;
     // let [weeklyWeatherData, setWeeklyWeatherData] = useState<WeeklyWeather[]>([]);
     let [sunTime, setsunTime] = useState<Time>({

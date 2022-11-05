@@ -1,6 +1,7 @@
-import { Avatar, Box, Button, Flex, Grid, GridItem, Text } from '@chakra-ui/react'
+import { Avatar, Box, Button, ButtonGroup, Flex, Grid, GridItem, IconButton, Switch, Text } from '@chakra-ui/react'
 import React, { useContext, useState } from 'react'
-import { MdArrowDropDown } from "react-icons/md";
+import { MdArrowDropDown, MdOutlineDarkMode, MdLightMode } from "react-icons/md";
+
 import { TodaysWeather, WeeklyWeather } from '../Schemas/Schema';
 import HighlightComponent from './HighlightComponent';
 import Sunrise from './Sunrise';
@@ -10,10 +11,16 @@ import useClick from './useClick';
 import WeatherWidget from './WeatherWidget';
 import { ThemeContext } from '../ThemeContext';
 
-
-const Main: React.FC<{ weeklyData: WeeklyWeather[]; TodayWeather: TodaysWeather, setUnit: (arg: string) => void, unitDet: string }> = (props) => {
-    let { weeklyData, TodayWeather, setUnit, unitDet } = props;
-
+interface Props {
+    TodayWeather: TodaysWeather,
+    weeklyData: WeeklyWeather[],
+    setUnit: (arg: string) => void,
+    Tempunit: string,
+    unitDet: string
+}
+const Main = (props: Props) => {
+    // const Main: React.FC<{ weeklyData: WeeklyWeather[]; TodayWeather: TodaysWeather, setUnit: (arg: string) => void, unitDet: string }> = (props) => {
+    let { weeklyData, TodayWeather, setUnit, unitDet, Tempunit } = props;
     // let { DarkTheme } = useContext(ThemeContext);
     // const [Darktheme, setDarktheme] = useState(useContext(ThemeContext))
     let { DarkTheme, themeChange } = useContext<any>(ThemeContext);
@@ -47,7 +54,44 @@ const Main: React.FC<{ weeklyData: WeeklyWeather[]; TodayWeather: TodaysWeather,
                         <Text color='#58b0f7' fontSize='xl' fontWeight='600'>Week</Text>
                     </Flex>
                     <Flex justifyContent='flex-end' gap='10px' fontFamily='Poppins'>
-                        <Flex bg='#4dabf7' w='8' h='8'
+                        <Flex alignItems={'center'}>
+                            <Switch onChange={() => { themeChange(!DarkTheme) }}
+                                zIndex='0'
+                                _active={{
+                                    outline: 'none',
+                                }}
+                                _focus={{
+                                    outline: 'none',
+                                    border: 'none'
+                                }}
+                                colorScheme='blue'
+                            />
+                            {/* <Button p='0' borderRadius='50%'
+
+                                zIndex='1'
+                                transition={'.3s'}
+                                size='sm'
+                                bg={DarkTheme ? 'blue.100' : 'blue.900'}
+                                color={DarkTheme ? 'blue.900' : 'blue.200'}
+                                onClick={themeChange}
+                                _hover={{
+                                    bg: 'black',
+                                    color: 'blue.200'
+                                }}
+                                _focus={{
+                                    outline: 'none',
+                                }}
+                                _active={{
+                                    outline: 'none',
+                                    background: 'black',
+                                    transform: 'scale(0.85)'
+                                }}
+                            >
+                                {DarkTheme ? <MdLightMode /> : <MdOutlineDarkMode />}
+                            </Button> */}
+
+                        </Flex>
+                        <Flex bg={Tempunit === 'metric' ? '#4dabf7' : '#8c8d9c'} w='8' h='8'
                             alignItems='center'
                             justifyContent='center'
                             color='white'
@@ -58,7 +102,7 @@ const Main: React.FC<{ weeklyData: WeeklyWeather[]; TodayWeather: TodaysWeather,
                                 °C
                             </Text>
                         </Flex>
-                        <Flex bg='#8c8d9c' w='8' h='8' alignItems='center' justifyContent='center' color='white' borderRadius='50%'
+                        <Flex bg={Tempunit === 'imperial' ? '#4dabf7' : '#8c8d9c'} w='8' h='8' alignItems='center' justifyContent='center' color='white' borderRadius='50%'
                             cursor='pointer'
                             onClick={() => { unit('imperial') }}
                         >
@@ -101,12 +145,7 @@ const Main: React.FC<{ weeklyData: WeeklyWeather[]; TodayWeather: TodaysWeather,
                         {/* {weather.map((item) => (
                             <HighlightComponent title={item.title} head={item.head} sub={item.sub} status={item.status} img={item.img} />
                         ))} */}
-                        <Timer />
-                        <Button size='sm' m='0 auto' w='100px' h='50px'
-                            isLoading={loading}
-                            onClick={loadingChange} >
-                            Click Me
-                        </Button>
+
 
                     </Grid>
                 </GridItem>

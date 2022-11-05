@@ -47,11 +47,11 @@ const WeatherWidget = (props: any) => {
       gap='15px'
       borderRadius='10px'
       _hover={DarkTheme ? {
-        bg: '#72bdf7',
+        bg: 'black',
         color: 'white',
         boxShadow: '10px 10px 5px black'
       } : {
-        bg: '#72bdf7',
+        bg: 'gray.100',
         color: 'white',
         boxShadow: '10px 10px 5px #dedede'
       }}
@@ -72,7 +72,7 @@ const WeatherWidget = (props: any) => {
       </Text>
 
 
-    </Flex>
+    </Flex >
   )
 }
 

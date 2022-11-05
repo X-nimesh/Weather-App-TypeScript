@@ -11,6 +11,7 @@ import axios from 'axios';
 import useClick from './useClick';
 // import { ThemeContext } from '../index';
 import { ThemeContext } from '../ThemeContext';
+import { CUIAutoComplete } from 'chakra-ui-autocomplete';
 
 const Sidebar: React.FC<{ Todayweather: TodaysWeather, cord: (arg: Coordinates) => void, unit: string }> = (props) => {
     let date = new Date()
@@ -76,6 +77,7 @@ const Sidebar: React.FC<{ Todayweather: TodaysWeather, cord: (arg: Coordinates) 
         // console.log("log : response.data.map : citiesList", citiesList)
 
     }
+
     // console.log(cities);
     let cityDetail = {
         'CityName': "Kathmandu",
@@ -89,22 +91,26 @@ const Sidebar: React.FC<{ Todayweather: TodaysWeather, cord: (arg: Coordinates) 
 
     return (
         <>
-            <Flex alignItems='center' direction='column' gap='20px' pl='20px' pt='20px' bg={DarkTheme ? '#181818' : 'white'}  >
-                <Button size='sm' m='0 auto' w='100px' h='50px'
+            <Flex alignItems='center' direction='column' gap='20px' h='100vh' pl='20px' pt='20px' bg={DarkTheme ? '#181818' : 'white'}  >
+                {/* <Button size='sm' m='0 auto' w='100px' h='50px'
                     isLoading={loading}
                     onClick={themeChange} >
                     Click Me
-                </Button >
+                </Button > */}
 
                 <Stack w='95%' spacing={0} >
-                    <InputGroup bg='white' borderRadius='10px'>
+                    <InputGroup borderRadius='10px'
+                        border={'black'}
+                        _hover={{ outline: 'none' }}
+                        bg={DarkTheme ? '#181818' : 'white'}
+                    >
                         <InputLeftElement
                             pointerEvents='none'
-                            children={<AiOutlineSearch color='black' />}
+                            children={<AiOutlineSearch color={DarkTheme ? 'white' : 'black'} />}
                         />
                         <Input type='tel' placeholder='search' color='black' onChange={handleSearch} />
                     </InputGroup>
-                    {cities.length > 0 && <Flex direction='column' color='gray.500' bg='white' border='1px' borderColor='gray.200' pl='40px'>
+                    {cities.length > 0 && <Flex direction='column' color='gray.500' bg={DarkTheme ? '#181818' : 'white'} borderColor='gray.200' >
                         {cities?.map((item: any) => {
                             console.log(item);
                             cityDetail.CityName = item.name;
@@ -168,7 +174,7 @@ const Sidebar: React.FC<{ Todayweather: TodaysWeather, cord: (arg: Coordinates) 
                     </Text>
                 </Wrap>
 
-            </Flex>
+            </Flex >
 
         </>
     )
